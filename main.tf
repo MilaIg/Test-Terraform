@@ -18,9 +18,20 @@ module "virtual-machine" {
   virtual_machine_name = "win-sqlvm"
   
   
-data "azurerm_public_ips" "example" {
-  resource_group_name = "mila-rg"
-  attachment_status   = "Attached"
+resource "azurerm_resource_group" "mila-rg" {
+  name     = "mila-rg-resources"
+  location = "West Europe"
+}
+
+resource "azurerm_public_ip" "mila-rg" {
+  name                = "acceptanceTestPublicIp1"
+  resource_group_name = azurerm_resource_group.mila-rg.name
+  location            = azurerm_resource_group.eu-west.location
+  allocation_method   = "Static"
+
+  tags = {
+    environment = "Production"
+  }
 }
 
   # This module support multiple Pre-Defined Linux and Windows Distributions.
