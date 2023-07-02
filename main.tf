@@ -9,8 +9,6 @@ module "virtual-machine" {
 
   # A prefix to use for all resources created (if left blank, the resource group name will be used)
   resource_prefix = "test"
-  # A prefix to use for all resouyrces created (if left blank, the resource group name will be used)
-  resource_prefix     = ""
 
   # Resource Group, location, VNet and Subnet details
   resource_group_name  = "mila-rg"
@@ -20,15 +18,15 @@ module "virtual-machine" {
   virtual_machine_name = "win-sqlvm"
 
 
-resource "azurerm_resource_group" "mila-rg" = {
+resource "azurerm_resource_group" "rg" {
     name     = "mila-rg"
     location = "West Europe"
   }
 
-resource "azurerm_public_ip" "mila-rg" = {
+resource "azurerm_public_ip" "ip" {
     name                = "acceptanceTestPublicIp1"
-    resource_group_name = azurerm_resource_group.mila-rg.name
-    location            = azurerm_resource_group.eu-west.location
+    resource_group_name = azurerm_resource_group.rg.name
+    location            = azurerm_resource_group.rg.location
     allocation_method   = "Static"
 
     tags = {

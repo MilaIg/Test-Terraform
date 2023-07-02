@@ -1,0 +1,19 @@
+Git commands:
+$ git push
+Enumerating objects: 52, done.
+Counting objects: 100% (52/52), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (38/38), done.
+Writing objects: 100% (47/47), 52.13 MiB | 1.42 MiB/s, done.
+Total 47 (delta 13), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (13/13), completed with 1 local object.
+remote: error: Trace: 6fdc222a57251bbe77a4a9b0f2f9a70bb3f9051653f42b1948eed83659d9a2e3
+remote: error: See https://gh.io/lfs for more information.
+remote: error: File .terraform/providers/registry.terraform.io/hashicorp/azurerm/3.63.0/windows_amd64/terraform-provider-azurerm_v3.63.0_x5.exe is 187.42 MB; this exceeds GitHub's file size limit of 100.00 MB
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+To https://github.com/MilaIg/Test-Terraform.git
+ ! [remote rejected] main -> main (pre-receive hook declined)
+error: failed to push some refs to 'https://github.com/MilaIg/Test-Terraform.git'
+
+tsvetomila.ignatova@bgs-lws-166 MINGW64 ~/Test-Terraform (main)
+$ git filter-branch -f --index-filter 'git rm --cached -r --ignore-unmatch .terraform/'
