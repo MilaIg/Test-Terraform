@@ -16,23 +16,23 @@ module "virtual-machine" {
   virtual_network_name = "hub-eu-west-001-vnet"
   subnet_name          = "snet-management"
   virtual_machine_name = "win-sqlvm"
-  
-  
-resource "azurerm_resource_group" "mila-rg" {
-  name     = "mila-rg-resources"
-  location = "West Europe"
-}
 
-resource "azurerm_public_ip" "mila-rg" {
-  name                = "acceptanceTestPublicIp1"
-  resource_group_name = azurerm_resource_group.mila-rg.name
-  location            = azurerm_resource_group.eu-west.location
-  allocation_method   = "Static"
 
-  tags = {
-    environment = "Production"
+resource "azurerm_resource_group" "mila-rg" = {
+    name     = "mila-rg"
+    location = "West Europe"
   }
-}
+
+resource "azurerm_public_ip" "mila-rg" = {
+    name                = "acceptanceTestPublicIp1"
+    resource_group_name = azurerm_resource_group.mila-rg.name
+    location            = azurerm_resource_group.eu-west.location
+    allocation_method   = "Static"
+
+    tags = {
+      environment = "Production"
+    }
+  }
 
   # This module support multiple Pre-Defined Linux and Windows Distributions.
   # Check the README.md file for more pre-defined images for WindowsServer, MSSQLServer.
