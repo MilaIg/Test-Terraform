@@ -5,7 +5,7 @@ terraform {
       version = "~> 3.59.0"
     }
   }
-
+}
 resource "azurerm_resource_group" "rg" {
   name     = "mila-rg"
   location = "West Europe"
