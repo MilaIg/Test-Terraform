@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"virtual-machine","Source":"registry.terraform.io/ravensorb/azure-virtual-machine/azurerm","Version":"1.0.0","Dir":".terraform/modules/virtual-machine"}]}
