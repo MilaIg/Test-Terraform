@@ -13,7 +13,7 @@ module "virtual-machine" {
   version = "1.0.0"
 
   # A prefix to use for all resouyrces created (if left blank, the resource group name will be used)
-  resource_prefix     =
+  resource_prefix     = ""
 
   # Resource Group, location, VNet and Subnet details
   resource_group_name  = "mila-rg"
