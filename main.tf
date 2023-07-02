@@ -37,8 +37,13 @@ module "virtual-machine" {
   # Proxymity placement group, Availability Set and adding Public IP to VM's are optional.
   # remove these argument from module if you dont want to use it.  
   # enable_proximity_placement_group = true
-  enable_vm_availability_set       = true
-  enable_public_ip_address         = true
+  enable_vm_availability_set = true
+  enable_public_ip_address   = true
+  
+  data "azurerm_public_ips" "example" {
+  resource_group_name = "mila-rg"
+  attachment_status   = "Attached"
+}
 
   # Network Seurity group port allow definitions for each Virtual Machine
   # NSG association to be added automatically for all network interfaces.
