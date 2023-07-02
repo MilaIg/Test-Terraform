@@ -1,96 +1,31 @@
-# Azurerm provider configuration
-provider "azurerm" {
-  features {}
-}
-
-module "virtual-machine" {
-  source  = "ravensorb/azure-virtual-machine/azurerm"
-  version = "1.0.0"
-
-  # A prefix to use for all resources created (if left blank, the resource group name will be used)
-  resource_prefix = "test"
-
-  # Resource Group, location, VNet and Subnet details
-  resource_group_name  = "mila-rg"
-  location             = "West Europe"
-  virtual_network_name = "hub-eu-west-001-vnet"
-  subnet_name          = "snet-management"
-  virtual_machine_name = "win-sqlvm"
-
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.59.0"
+    }
+  }
 
 resource "azurerm_resource_group" "rg" {
-    name     = "mila-rg"
-    location = "West Europe"
-  }
+  name     = "mila-rg"
+  location = "West Europe"
+}
+resource "azurerm_mssql_server" "sqlserver" {
+  name                         = "mila-dbserver"
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = azurerm_resource_group.rg.location
+  version                      = "12.0"
+  administrator_login          = var.sql_admin_login
+  administrator_login_password = var.sql_admin_password
+}
 
-resource "azurerm_public_ip" "ip" {
-    name                = "acceptanceTestPublicIp1"
-    resource_group_name = azurerm_resource_group.rg.name
-    location            = azurerm_resource_group.rg.location
-    allocation_method   = "Static"
-
-    tags = {
-      environment = "Production"
-    }
-  }
-
-  # This module support multiple Pre-Defined Linux and Windows Distributions.
-  # Check the README.md file for more pre-defined images for WindowsServer, MSSQLServer.
-  # Please make sure to use gen2 images supported VM sizes if you use gen2 distributions
-  # This module creates a random admin password if `admin_password` is not specified
-  # Specify a valid password with `admin_password` argument to use your own password 
-  os_flavor                 = "windows"
-  windows_distribution_name = "mssql2019std"
-  virtual_machine_size      = "Standard_A2_v2"
-  admin_username            = "azureadmin"
-  admin_password            = "P@$$w0rd1234!"
-  instances_count           = 2
-
-  # Network Seurity group port allow definitions for each Virtual Machine
-  # NSG association to be added automatically for all network interfaces.
-  # Remove this NSG rules block, if `existing_network_security_group_id` is specified
-  nsg_inbound_rules = [
-    {
-      name                   = "rdp"
-      destination_port_range = "3389"
-      source_address_prefix  = "*"
-    },
-    {
-      name                   = "http"
-      destination_port_range = "80"
-      source_address_prefix  = "*"
-    },
-  ]
-
-  # Boot diagnostics to troubleshoot virtual machines, by default uses managed 
-  # To use custom storage account, specify `storage_account_name` with a valid name
-  # Passing a `null` value will utilize a Managed Storage Account to store Boot Diagnostics
-  enable_boot_diagnostics = true
-
-  # Attach a managed data disk to a Windows/Linux VM's. Possible Storage account type are: 
-  # `Standard_LRS`, `StandardSSD_ZRS`, `Premium_LRS`, `Premium_ZRS`, `StandardSSD_LRS`
-  # or `UltraSSD_LRS` (UltraSSD_LRS only available in a region that support availability zones)
-  # Initialize a new data disk - you need to connect to the VM and run diskmanagemnet or fdisk
-  data_disks = [
-    {
-      name                 = "disk1"
-      disk_size_gb         = 100
-      storage_account_type = "StandardSSD_LRS"
-    },
-    {
-      name                 = "disk2"
-      disk_size_gb         = 200
-      storage_account_type = "Standard_LRS"
-    }
-  ]
-  # Adding additional TAG's to your Azure resources
-  tags = {
-    CreatedBy    = "Mila"
-    CreatedOn    = "2023/07/02"
-    Environment  = "PROD"
-    Critical     = "YES"
-    Location     = "eu-west"
-    Solution     = "test"
-    ServiceClass = "Gold"
-  }
+resource "azurerm_mssql_database" "sql" {
+  name           = "mila-db"
+  server_id      = azurerm_mssql_server.sqlserver.id
+  collation      = "SQL_Latin1_General_CP1_CI_AS"
+  license_type   = "LicenseIncluded"
+  max_size_gb    = 4
+  read_scale     = true
+  sku_name       = "S0"
+  zone_redundant = true
 }
