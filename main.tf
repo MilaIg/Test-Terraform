@@ -9,6 +9,8 @@ module "virtual-machine" {
 
   # A prefix to use for all resources created (if left blank, the resource group name will be used)
   resource_prefix = "test"
+  # A prefix to use for all resouyrces created (if left blank, the resource group name will be used)
+  resource_prefix     = ""
 
   # Resource Group, location, VNet and Subnet details
   resource_group_name  = "mila-rg"
