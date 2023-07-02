@@ -3,11 +3,6 @@ provider "azurerm" {
   features {}
 }
 
-data "azurerm_log_analytics_workspace" "example" {
-  name                = "mila"
-  resource_group_name = "mila-rg"
-}
-
 module "virtual-machine" {
   source  = "ravensorb/azure-virtual-machine/azurerm"
   version = "1.0.0"
@@ -18,9 +13,15 @@ module "virtual-machine" {
   # Resource Group, location, VNet and Subnet details
   resource_group_name  = "mila-rg"
   location             = "West Europe"
-  virtual_network_name = "hub-euw-001-vnet"
+  virtual_network_name = "hub-eu-west-001-vnet"
   subnet_name          = "snet-management"
   virtual_machine_name = "win-sqlvm"
+  
+  
+data "azurerm_public_ips" "example" {
+  resource_group_name = "mila-rg"
+  attachment_status   = "Attached"
+}
 
   # This module support multiple Pre-Defined Linux and Windows Distributions.
   # Check the README.md file for more pre-defined images for WindowsServer, MSSQLServer.
@@ -75,11 +76,10 @@ module "virtual-machine" {
   tags = {
     CreatedBy    = "Mila"
     CreatedOn    = "2023/07/02"
-    CostCenter   = "IT"
     Environment  = "PROD"
     Critical     = "YES"
     Location     = "eu-west"
-    Solution     = "filesync"
+    Solution     = "test"
     ServiceClass = "Gold"
   }
 }
