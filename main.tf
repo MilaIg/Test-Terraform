@@ -12,12 +12,8 @@ module "virtual-machine" {
   source  = "ravensorb/azure-virtual-machine/azurerm"
   version = "1.0.0"
 
-  # A prefix to use for all resouyrces created (if left blank, the resource group name will be used)
-<<<<<<< HEAD
-  resource_prefix = ""
-=======
-  resource_prefix     = ""
->>>>>>> d0615ab5974f2c25d2c39bc29913e784e6c3b788
+  # A prefix to use for all resources created (if left blank, the resource group name will be used)
+  resource_prefix = "test"
 
   # Resource Group, location, VNet and Subnet details
   resource_group_name  = "mila-rg"
