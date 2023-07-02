@@ -13,7 +13,7 @@ module "virtual-machine" {
   version = "1.0.0"
 
   # A prefix to use for all resouyrces created (if left blank, the resource group name will be used)
-  resource_prefix     = ""
+  resource_prefix = ""
 
   # Resource Group, location, VNet and Subnet details
   resource_group_name  = "mila-rg"
@@ -36,7 +36,7 @@ module "virtual-machine" {
 
   # Proxymity placement group, Availability Set and adding Public IP to VM's are optional.
   # remove these argument from module if you dont want to use it.  
-  enable_proximity_placement_group = true
+  # enable_proximity_placement_group = true
   enable_vm_availability_set       = true
   enable_public_ip_address         = true
 
@@ -77,26 +77,15 @@ module "virtual-machine" {
       storage_account_type = "Standard_LRS"
     }
   ]
-
-  # (Optional) To enable Azure Monitoring and install log analytics agents
-  # (Optional) Specify `storage_account_name` to save monitoring logs to storage.   
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.example.id
-
-  # Deploy log analytics agents to virtual machine. 
-  # Log analytics workspace customer id and primary shared key required.
-  deploy_log_analytics_agent                 = true
-  log_analytics_customer_id                  = data.azurerm_log_analytics_workspace.example.workspace_id
-  log_analytics_workspace_primary_shared_key = data.azurerm_log_analytics_workspace.example.primary_shared_key
-
   # Adding additional TAG's to your Azure resources
   tags = {
-    CreatedBy   = "Mila"
-    CreatedOn   = "2023/07/02"
-    CostCenter  = "IT"
-    Environment = "PROD"
-    Critical    = "YES"
-    Location    = "eu-west"
-    Solution    = "filesync"
+    CreatedBy    = "Mila"
+    CreatedOn    = "2023/07/02"
+    CostCenter   = "IT"
+    Environment  = "PROD"
+    Critical     = "YES"
+    Location     = "eu-west"
+    Solution     = "filesync"
     ServiceClass = "Gold"
   }
 }
